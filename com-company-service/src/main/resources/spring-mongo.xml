@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:context="http://www.springframework.org/schema/context" 
+    xmlns:mongo="http://www.springframework.org/schema/data/mongo" 
+    xmlns:util="http://www.springframework.org/schema/util" 
+    xsi:schemaLocation="http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.8.xsd
+    	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd 
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd" 
+     default-lazy-init="true">
+     
+    <context:property-placeholder ignore-unresolvable="true" location="classpath:syscfg-mongodb.properties" />
+    
+    <!--credentials的配置形式是：用户名:密码@默认数据库-->
+    <mongo:mongo-client id="mongoDBClient" host="${mongodb.host}" port="${mongodb.port}" 
+    	credentials="${mongodb.username}:${mongodb.password}@admin">
+        <mongo:client-options  write-concern="SAFE"
+            connections-per-host="${mongodb.connectionsPerHost}" 
+            threads-allowed-to-block-for-connection-multiplier="${mongodb.threadsAllowedToBlockForConnectionMultiplier}" 
+            connect-timeout="${mongodb.connectTimeout}" 
+            max-wait-time="${mongodb.maxWaitTime}" 
+            socket-timeout="${mongodb.socketTimeout}"
+            socket-keep-alive="${mongodb.socketKeepAlive}"/>        
+    </mongo:mongo-client>
+    <!-- 集群设置 -->
+    <!-- <mongo:mongo id="mongo" replica-set="${mongodb.config.replica.set.address}">
+    	<mongo:options connections-per-host="${mongodb.connectionsPerHost}"
+		    threads-allowed-to-block-for-connection-multiplier="${mongodb.threadsAllowedToBlockForConnectionMultiplier}"
+		    connect-timeout="${mongodb.connectTimeout}" 
+            max-wait-time="${mongodb.maxWaitTime}" 
+            socket-timeout="${mongodb.socketTimeout}"
+		    auto-connect-retry="${mongodb.autoConnectRetry}"/>
+    </mongo:mongo> -->
+    
+    <!-- 集群设置 mongo-ref="mongo" -->
+    <mongo:db-factory id="mongoDBFactory" dbname="${mongodb.database}" mongo-ref="mongoDBClient" />
+    
+    <bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+        <constructor-arg name="mongoDbFactory" ref="mongoDBFactory" />
+    </bean>
+</beans>
