@@ -502,7 +502,7 @@
 		    <!-- <dependency>
 		        <groupId>org.springframework.data</groupId>  
 		        <artifactId>spring-data-mongodb</artifactId>  
-		        <version>1.8.6.RELEASE</version>
+		        <version>3.3.5</version>
 		    </dependency> -->  
 			<!-- mongodb结束 -->
 			<!-- 消息中间件kafka -->
@@ -572,7 +572,7 @@
 			<dependency>
 				<groupId>org.springframework.data</groupId>
 				<artifactId>spring-data-mongodb</artifactId>
-				<version>1.8.6.RELEASE</version>
+				<version>3.3.5</version>
 			</dependency>
 			<!-- mongodb结束 -->
 		</dependencies>
